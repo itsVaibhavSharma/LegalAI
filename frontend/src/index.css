@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Tailwind CSS directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Custom base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #0f172a;
+  color: #f1f5f9;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(139, 92, 246, 0.7);
+}
+
+/* Utilities */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent;
+  }
+  
+  .glass {
+    @apply bg-white/10 backdrop-blur-sm border border-white/20;
+  }
+  
+  .glass-strong {
+    @apply bg-white/20 backdrop-blur-md border border-white/30;
+  }
+}
+
+/* Components */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-gradient-to-r from-purple-600 to-blue-600 border border-transparent rounded-xl shadow-lg hover:from-purple-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200 transform hover:scale-105;
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center justify-center px-6 py-3 text-base font-medium text-purple-200 bg-white/10 border border-white/20 rounded-xl hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition-all duration-200;
+  }
+  
+  .card {
+    @apply bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 shadow-xl;
+  }
+  
+  .card-hover {
+    @apply card transition-all duration-300 hover:bg-white/15 hover:border-white/30 hover:shadow-2xl;
+  }
+}
+
+/* Custom animations */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.shimmer {
+  animation: shimmer 1.5s infinite linear;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  background-size: 468px 100%;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Dropzone styles */
+.dropzone {
+  @apply border-2 border-dashed border-purple-400/50 rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer;
+}
+
+.dropzone:hover {
+  @apply border-purple-400 bg-purple-500/10;
+}
+
+.dropzone.active {
+  @apply border-purple-400 bg-purple-500/20 scale-105;
+}
+
+.dropzone.rejected {
+  @apply border-red-400 bg-red-500/20;
+}
+
+/* Progress bar */
+.progress-bar {
+  @apply w-full bg-gray-700 rounded-full h-2 overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300;
+}
+
+/* Risk level badges */
+.risk-low {
+  @apply bg-green-500/20 text-green-300 border border-green-500/30;
+}
+
+.risk-medium {
+  @apply bg-yellow-500/20 text-yellow-300 border border-yellow-500/30;
+}
+
+.risk-high {
+  @apply bg-red-500/20 text-red-300 border border-red-500/30;
+}
+
+/* Loading spinner */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 2s linear infinite;
+}
+
+/* Language selector */
+.language-option {
+  @apply px-4 py-2 text-sm text-purple-200 hover:bg-purple-500/20 hover:text-white cursor-pointer transition-colors duration-200;
+}
+
+.language-option.selected {
+  @apply bg-purple-600/30 text-white;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .dropzone {
+    @apply p-6;
+  }
+  
+  .card {
+    @apply mx-2;
+  }
+}
+
+/* Focus styles for accessibility */
+.focus\:outline-custom:focus {
+  outline: 2px solid rgba(139, 92, 246, 0.6);
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .glass, .glass-strong {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass, .glass-strong {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Dark mode enhancement */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #0f172a;
+  }
+}
