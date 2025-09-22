@@ -1,4 +1,4 @@
-# LegalAI 🏛️📄
+# LegalAI 📄
 
 A comprehensive multilingual legal document analysis application powered by Google Cloud AI technologies. Upload PDF, DOCX, or image files containing legal documents and receive intelligent AI-powered analysis in 50+ languages.
 
