@@ -281,11 +281,12 @@ class GeminiAIService {
       const prompt = this.buildAnalysisPrompt(documentText, language);
       
       // Try different models as fallback
-      const models = [
-        'gemini-1.5-pro-latest',
-        'gemini-1.5-pro',
-        'gemini-pro'
-      ];
+    const models = [
+      'gemini-2.5-flash-lite',   // Stable version of Gemini
+      'gemini-1.0',          // fallback if first fails
+      'gemini-stable'        // final fallback
+    ];
+
 
       for (const modelName of models) {
         try {
