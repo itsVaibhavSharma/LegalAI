@@ -1,4 +1,4 @@
-// backend/server.js - UPDATED FOR VERCEL SERVERLESS
+// backend/server.js - COMPLETE FIXED VERSION
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -10,6 +10,9 @@ const documentsRouter = require('./src/routes/documents');
 
 const app = express();
 
+// CRITICAL: Trust proxy for Vercel
+app.set('trust proxy', 1);
+
 // Enhanced CORS for Vercel
 const corsOptions = {
   origin: function (origin, callback) {
@@ -20,14 +23,12 @@ const corsOptions = {
       process.env.VERCEL_URL,
     ].filter(Boolean);
     
-    // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
     
-    // Check if origin is allowed or matches Vercel preview deployments
     if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('.vercel.app')) {
       callback(null, true);
     } else {
-      callback(null, true); // Allow all for now, restrict in production
+      callback(null, true);
     }
   },
   credentials: true,
@@ -38,19 +39,20 @@ const corsOptions = {
 // Security middleware
 app.use(helmet({
   crossOriginEmbedderPolicy: false,
-  contentSecurityPolicy: false, // Disable for Vercel
+  contentSecurityPolicy: false,
 }));
 
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions));
 
-// Rate limiting (more lenient for serverless)
+// Rate limiting - FIXED for Vercel
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: { error: 'Too many requests, please try again later.' },
   standardHeaders: true,
   legacyHeaders: false,
+  // Skip rate limiting for health checks
+  skip: (req) => req.path === '/health'
 });
 app.use(limiter);
 
@@ -58,12 +60,12 @@ app.use(limiter);
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
-// Multer configuration for Vercel (use memory storage)
+// Multer configuration
 const storage = multer.memoryStorage();
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB
+    fileSize: 50 * 1024 * 1024
   },
   fileFilter: (req, file, cb) => {
     const allowedTypes = [
@@ -144,6 +146,6 @@ module.exports = app;
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 3001;
   app.listen(PORT, () => {
-    console.log(` Server running on port ${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
   });
 }
