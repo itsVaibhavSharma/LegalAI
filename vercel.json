@@ -1,14 +1,38 @@
 {
-  "buildCommand": "cd frontend && npm install && npm run build && cd ../backend && npm install",
-  "outputDirectory": "frontend/build",
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/:path*",
-      "destination": "/backend/server.js"
+      "src": "frontend/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
     },
     {
-      "source": "/health",
-      "destination": "/backend/server.js"
+      "src": "backend/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "/backend/server.js"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/frontend/build/static/$1"
+    },
+    {
+      "src": "/(.*\\.(js|css|json|ico|png|jpg|jpeg|svg|gif|webp))",
+      "dest": "/frontend/build/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/build/index.html"
     }
   ]
 }
