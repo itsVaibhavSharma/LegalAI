@@ -94,6 +94,15 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use((req, res, next) => {
+  // Strip /api prefix if it exists
+  if (req.url.startsWith('/api/')) {
+    req.url = req.url.replace('/api', '');
+  }
+  next();
+});
+
+
 // Routes
 app.use('/api/documents', documentsRouter);
 
